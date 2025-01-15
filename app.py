@@ -33,4 +33,4 @@ def prediction():
         return render_template('home.html', results=round(predictions[0], 2))
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
