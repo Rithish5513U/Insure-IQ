@@ -1,3 +1,5 @@
 artifacts
 venv
 Medical_Cost_Prediction.egg-info
+notebook/catboost_info
+catboost_info
