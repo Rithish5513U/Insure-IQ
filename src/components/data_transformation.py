@@ -47,7 +47,8 @@ class DataTransformation:
                 [
                     ("num_pipeline", num_pipeline, numerical_features),
                     ("cat_pipeline", cat_pipeline, categorical_features)
-                ]
+                ],
+                remainder="passthrough"
             )
 
             return preprocessor
@@ -55,7 +56,7 @@ class DataTransformation:
         except Exception as e:
             raise CustomException(e,sys)
         
-    def data_tranform(self, train_path, valid_path):
+    def data_transform(self, train_path, valid_path):
         try:
             train_df = pd.read_csv(train_path)
             valid_df = pd.read_csv(valid_path)

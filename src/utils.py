@@ -39,12 +39,16 @@ def evaluate_model(X_train, Y_train, X_test, Y_test, models, params):
             
             gs = GridSearchCV(model, param, cv=3)
             gs.fit(X_train, Y_train)
+            print(param)
             
-            model.set_params(**gs.best_params_)
-            model.fit(X_train, Y_train)
+            best_model = gs.best_estimator_
+            best_model_params = gs.best_params_
             
-            y_train_pred = model.predict(X_train)
-            y_test_pred = model.predict(X_test)
+            best_model.set_params(**best_model_params)
+            best_model.fit(X_train, Y_train)
+            
+            y_train_pred = best_model.predict(X_train)
+            y_test_pred = best_model.predict(X_test)
             
             model_train_score = r2_score(Y_train, y_train_pred)
             model_test_score = r2_score(Y_test, y_test_pred)

@@ -34,21 +34,19 @@ class Trainer:
             )
 
             models = {
-                "Random Forest Regressor": RandomForestRegressor(),
-                "Decision Tree Regressor": DecisionTreeRegressor(),
+                "Random Forest": RandomForestRegressor(),
+                "Decision Tree": DecisionTreeRegressor(),
                 "Gradient Boosting": GradientBoostingRegressor(),
                 "Linear Regression": LinearRegression(),
-                "XGBRegressor": XGBRegressor(),
-                "CatBoosting Regressor": CatBoostRegressor(verbose=False),
                 "AdaBoost Regressor": AdaBoostRegressor(),
                 "KNeighbors Regressor": KNeighborsRegressor()
             }
             params={
-                "Decision Tree": {
-                    'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson']
-                },
                 "Random Forest":{
                     'n_estimators': [8,16,32,64,128,256]
+                },
+                "Decision Tree": {
+                    'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson']
                 },
                 "Gradient Boosting":{
                     'learning_rate':[.1,.01,.05,.001],
@@ -56,15 +54,6 @@ class Trainer:
                     'n_estimators': [8,16,32,64,128,256]
                 },
                 "Linear Regression":{},
-                "XGBRegressor":{
-                    'learning_rate':[.1,.01,.05,.001],
-                    'n_estimators': [8,16,32,64,128,256]
-                },
-                "CatBoosting Regressor":{
-                    'depth': [6,8,10],
-                    'learning_rate': [0.01, 0.05, 0.1],
-                    'iterations': [30, 50, 100]
-                },
                 "AdaBoost Regressor":{
                     'learning_rate':[.1,.01,0.5,.001],
                     'n_estimators': [8,16,32,64,128,256]
@@ -98,6 +87,6 @@ class Trainer:
             return best_score
 
         except Exception as e:
-            raise CustomException(e)
+            raise CustomException(e, sys)
         
 

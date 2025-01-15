@@ -29,16 +29,16 @@ class DataIngestion:
             
             df.drop_duplicates(inplace=True)
             
-            os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
-            df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
+            os.makedirs(os.path.dirname(self.config.train_data_path),exist_ok=True)
+            df.to_csv(self.config.raw_data_path, index=False, header=True)
             
             logging.info('Train test split...')
             train_set, remaining_set = train_test_split(df, train_size=0.7, random_state=42)
             valid_set, test_set = train_test_split(remaining_set, test_size=0.15, random_state=42)
             
-            train_set.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
-            valid_set.to_csv(self.ingestion_config.validation_data_path, index=False, header=True)
-            test_set.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
+            train_set.to_csv(self.config.train_data_path, index=False, header=True)
+            valid_set.to_csv(self.config.validation_data_path, index=False, header=True)
+            test_set.to_csv(self.config.test_data_path, index=False, header=True)
             
             logging.info("Data Ingestion complete...")
             

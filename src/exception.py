@@ -3,9 +3,9 @@ import sys
 def error_message_details(error, error_details):
     _,_,exc_tb = error_details.exc_info()
     
-    file_name = exc_tb.tb_frame.f_code.co_file_name
+    file_name = exc_tb.tb_frame.f_code.co_filename
     
-    error_message = "Error occured in [{0}] at line [{1}] : [{2}]".format(file_name, exc_tb.tb_line_no, str(error))
+    error_message = "Error occured in [{0}] at line [{1}] : [{2}]".format(file_name, exc_tb.tb_lineno, str(error))
     
     return error_message
 
