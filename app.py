@@ -1,36 +1,37 @@
-from flask import Flask, render_template, request
 import numpy as np
 import pandas as pd
+import streamlit as st
 
-from sklearn.preprocessing import StandardScaler
 from src.pipeline.prediction_pipeline import InputData, PreditctPipeline
 
-app = Flask(__name__)
+st.title("Medical Cost Prediction")
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+st.sidebar.header("Input features")
+age = st.sidebar.number_input("Age", min_value=0, max_value=100, value=25)
+children = st.sidebar.number_input("Children", min_value=0, max_value=10, value=0)
+bmi = st.sidebar.number_input("BMI", min_value=10.0, max_value=50.0, value=22.0, format="%.1f")
+sex = st.sidebar.selectbox("Sex", options=["male", "female"])
+smoker = st.sidebar.selectbox("Smoker", options=["yes", "no"])
+region = st.sidebar.selectbox("Region", options=["northeast", "northwest", "southeast", "southwest"])
 
-@app.route('/predict', methods=['GET', 'POST'])
-def prediction():
-    if request.method == 'GET':
-        return render_template('home.html')
-    else:
-        data = InputData(
-            age=request.form.get('age'),
-            children=request.form.get('children'),
-            bmi=request.form.get('bmi'),
-            sex=request.form.get('sex'),
-            smoker=request.form.get('smoker'),
-            region=request.form.get('region')
-        )
-        
-        data_df = data.get_data_as_dataFrame()
-        print(data_df)
-        
+if st.sidebar.button("Predict"):
+    # Prepare the input data
+    data = InputData(
+        age=age,
+        children=children,
+        bmi=bmi,
+        sex=sex,
+        smoker=smoker,
+        region=region,
+    )
+    
+    data_df = data.get_data_as_dataFrame()
+    st.write("Input Data:", data_df)
+
+    # Load the prediction pipeline and make a prediction
+    try:
         predict_pipeline = PreditctPipeline()
         predictions = predict_pipeline.predict(data_df)
-        return render_template('home.html', results=round(predictions[0], 2))
-    
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=10000, debug=True)
+        st.success(f"Predicted Medical Cost: ${round(predictions[0], 2)}")
+    except Exception as e:
+        st.error(f"Error occurred during prediction: {e}")

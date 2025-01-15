@@ -35,6 +35,6 @@ if __name__=='__main__':
     testing = Testing()
 
     test_df = pd.read_csv('artifacts/test.csv')
-    r2_ = testing.get_test_results(test_df)
+    r2_ = testing.results(test_df)
 
     print("Test R2 Score: {}".format(round(r2_,2)))
