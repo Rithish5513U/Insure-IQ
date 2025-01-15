@@ -32,5 +32,5 @@ def prediction():
         predictions = predict_pipeline.predict(data_df)
         return render_template('home.html', results=round(predictions[0], 2))
     
-if __name__ == '__main__':
-    app.run(debug=False)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=10000, debug=True)
