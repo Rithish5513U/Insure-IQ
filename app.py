@@ -2,16 +2,13 @@ import streamlit as st
 import pandas as pd
 from src.pipeline.prediction_pipeline import InputData, PreditctPipeline
 
-# Set the title for the app
 st.title("Medical Cost Prediction")
 
-# Display input fields in the main body
 st.header("Enter the Details Below")
 
-# Input fields
 age = st.number_input("Age", min_value=0, max_value=100, value=25)
 children = st.number_input("Number of Children", min_value=0, max_value=10, value=0)
-bmi = st.number_input("Body Mass Index (BMI)", min_value=10.0, max_value=50.0, value=22.0, format="%.1f")
+bmi = st.number_input("Body Mass Index (BMI)", min_value=10.0, max_value=50.0, value=0.0, format="%.1f")
 sex = st.selectbox("Sex", options=["male", "female"])
 smoker = st.selectbox("Smoker", options=["yes", "no"])
 region = st.selectbox("Region", options=["northeast", "northwest", "southeast", "southwest"])
