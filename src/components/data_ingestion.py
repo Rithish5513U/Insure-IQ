@@ -20,10 +20,10 @@ class DataIngestion:
     def __init__(self):
         self.config = DataIngestionConfig()
         
-    def ingest(self):
+    def ingest(self, file_path = 'notebook/data/insurance.csv'):
         logging.info("Data ingestion started...")
         try:
-            df = pd.read_csv('notebook/data/insurance.csv')
+            df = pd.read_csv(file_path)
             
             logging.info('Reading complete...')
             
