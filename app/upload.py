@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 from src.components.data_ingestion import DataIngestion
-from run import app
+import pandas as pd
 import os
 
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+REQUIRED_COLUMNS = ['age','sex','bmi','children','smoker','region,charges']
 
 # @app.route('/upload', methods = ['POST'])
 def upload():
@@ -21,8 +23,20 @@ def upload():
     
     if file and file.filename.endswith('.csv'):
         try:
+            data = pd.read_csv(file)
+            
+            if data.empty():
+                return jsonify({"Error": "Uploaded file is empty"})
+            
+            missing_columns = [col for col in REQUIRED_COLUMNS if col not in data.columns]
+            if missing_columns:
+                return jsonify({
+                    "Error": "Invalid file format",
+                    "Missing Columns": missing_columns
+                }), 400
+            
             file_name = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+            file_path = os.path.join(UPLOAD_FOLDER, file_name)
             file.save(file_path)
             
             data_ingestion = DataIngestion()

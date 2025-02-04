@@ -1,37 +1,45 @@
 from flask import request, jsonify
 from src.pipeline.prediction_pipeline import PreditctPipeline
-import os
 import pandas as pd
-from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
+REQUIRED_COLUMNS = ['age','sex','bmi','children','smoker','region']
 
-# @app.route('/predict', methods=['GET'])
 def predict():
     """
     Endpoint to predict using the uploaded CSV file.
     """
     try:
-        file_name = request.args.get('file_name')
-        
-        if not file_name:
-            return jsonify({"Error" : "No file name provided"}), 400
+        if 'pred_file' not in request.files:
+            return jsonify({"Error": "No file uploaded"}), 400
 
-        file_path = os.path.join(UPLOAD_FOLDER, file_name)
-        
-        if not os.path.exists(file_path):
-            return jsonify({"Error": "File Not Found"}), 404
+        file = request.files['pred_file']
 
-        input_data = pd.read_csv(file_path)
+        if file.filename == '':
+            return jsonify({"Error": "No file selected"}), 400
+
+        if not file.filename.endswith('.csv'):
+            return jsonify({"Error": "Only CSV files are allowed"}), 400
+
+        input_data = pd.read_csv(file)
+        
+        missing_columns = [col for col in REQUIRED_COLUMNS if col not in input_data.columns]
+        if missing_columns:
+            return jsonify({
+                "Error": "Required columns are missing",
+                "Missing columns": missing_columns,
+            }), 400
+            
+        input_data = input_data[REQUIRED_COLUMNS]
+
+        if input_data.empty:
+            return jsonify({"Error": "Uploaded file is empty"}), 400
 
         pipeline = PreditctPipeline()
-
-        predictions = pipeline.predict(features=input_data)
-
-        os.remove(file_path)
+        predictions, features = pipeline.predict(features=input_data)
 
         return jsonify({
             "message": "Prediction successful",
+            "input_params": features.to_dict(),
             "predictions": predictions.tolist()
         }), 200
 

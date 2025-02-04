@@ -1,6 +1,7 @@
 import os
 import sys
 import pandas as pd
+import shutil
 from src.exception import CustomException
 from src.logger import logging
 from src.components.data_transformation import DataTransformation
@@ -28,6 +29,9 @@ class DataIngestion:
             logging.info('Reading complete...')
             
             df.drop_duplicates(inplace=True)
+            
+            if os.path.exists(self.config.train_data_path):
+                shutil.rmtree(self.config.train_data_path)
             
             os.makedirs(os.path.dirname(self.config.train_data_path),exist_ok=True)
             df.to_csv(self.config.raw_data_path, index=False, header=True)
