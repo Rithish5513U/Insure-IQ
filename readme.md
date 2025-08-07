@@ -1,4 +1,4 @@
-# Medical Cost Prediction
+# Insure IQ
 
 This project leverages machine learning to assist medical insurance companies in accurately predicting healthcare costs for individuals. By analyzing key factors such as age, BMI, smoking habits, and region, the model helps in determining fair and balanced insurance premiums.
 
