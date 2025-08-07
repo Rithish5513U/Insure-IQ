@@ -39,12 +39,12 @@ The dataset includes:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Rithish5513U/Medical-Cost-Prediction.git
+   git clone https://github.com/Rithish5513U/Insure-IQ.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd Medical-Cost-Prediction
+   cd Insure-IQ
    ```
 
 3. Create and activate a virtual environment:
